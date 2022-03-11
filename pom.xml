@@ -8,6 +8,15 @@
     <artifactId>study</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!--MD5依赖-->
+    <dependencies>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
