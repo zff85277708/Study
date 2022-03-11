@@ -7,6 +7,7 @@ public class ApiRequest {
     private String baseUrl;
     private String token;
     private String appId;
+    private long timeStamp;
 
     public String getBaseUrl() {
         return baseUrl;
@@ -23,8 +24,6 @@ public class ApiRequest {
     public long getTimeStamp() {
         return timeStamp;
     }
-
-    private long timeStamp;
 
     private ApiRequest(String baseUrl, String token, String appId, long timeStamp){
         this.baseUrl = baseUrl;
@@ -51,12 +50,5 @@ public class ApiRequest {
         String appId = map.get("appId");
         long timeStamp = Long.valueOf(map.get("timeStamp"));
         return new ApiRequest(baseUrl, token, appId, timeStamp);
-    }
-
-    public static void main(String[] args) {
-        String[] params = "https://www.baidu.com/s?wd=%20initialized&rsv_spt=1&rsv_iqid=0xa3ef1fb400010b40&issp=1".split("\\?");
-        System.out.println(params[0]);
-        for (String s : params)
-            System.out.println(s);
     }
 }
