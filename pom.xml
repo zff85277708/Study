@@ -6,7 +6,11 @@
 
     <groupId>com.zhuff</groupId>
     <artifactId>study</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>think-in-spring</module>
+    </modules>
 
     <!--MD5依赖-->
     <dependencies>
