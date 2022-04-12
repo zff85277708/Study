@@ -1,8 +1,5 @@
 package com.designPattern.performanceCounter;
 
-import com.google.gson.Gson;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -15,10 +12,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class ConsoleReporter {
     private MetricsStorage metricsStorage;
+    private Aggregator aggregator;
+    private StatViewer viewer;
     private ScheduledExecutorService executor;
 
-    public ConsoleReporter(MetricsStorage metricsStorage) {
+    public ConsoleReporter(MetricsStorage metricsStorage, Aggregator aggregator, StatViewer viewer) {
         this.metricsStorage = metricsStorage;
+        this.aggregator = aggregator;
+        this.viewer = viewer;
         this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -37,17 +38,10 @@ public class ConsoleReporter {
                     metricsStorage.getRequestInfos(startTimeInMillis, endTimeInMillis);
 
             //根据原始数据，计算得到统计数据
-            Map<String, RequestStat> requestStats = new HashMap<>();
-            for (Map.Entry<String, List<RequestInfo>> entry: requestInfos.entrySet()) {
-                String apiName = entry.getKey();
-                List<RequestInfo> requestInfosPerApi = entry.getValue();
-                RequestStat requestStat = Aggregator.aggregate(requestInfosPerApi, durationInMillis);
-                requestStats.put(apiName, requestStat);
-            }
+            Map<String, RequestStat> requestStats = aggregator.aggregate(requestInfos, durationInMillis);
 
             //将统计数据显示到终端
-            System.out.println("Time Span: [" + startTimeInMillis + ", " + endTimeInMillis + "]");
-            System.out.println(new Gson().toJson(requestStats));
-        }, 0, periodInSeconds, TimeUnit.SECONDS);
+            viewer.output(requestStats, startTimeInMillis, endTimeInMillis);
+        }, 0L, periodInSeconds, TimeUnit.SECONDS);
     }
 }

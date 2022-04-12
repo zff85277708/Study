@@ -8,26 +8,14 @@ import java.util.*;
  */
 public class EmailReporter {
     private static final Long DAY_HOURS_IN_SECONDS = 86400L;
-
     private MetricsStorage metricsStorage;
-    private EmailSender emailSender;
-    private List<String> toAddresses = new ArrayList<>();
+    private Aggregator aggregator;
+    private StatViewer viewer;
 
-    public EmailReporter(MetricsStorage metricsStorage) {
-        this(metricsStorage, new EmailSender());
-    }
-
-    public EmailReporter(MetricsStorage metricsStorage, EmailSender emailSender) {
+    public EmailReporter(MetricsStorage metricsStorage, Aggregator aggregator, StatViewer viewer) {
         this.metricsStorage = metricsStorage;
-        this.emailSender = emailSender;
-    }
-
-    /**
-     * 添加邮箱地址
-     * @param address 邮箱地址
-     */
-    public void addToAddress(String address) {
-        toAddresses.add(address);
+        this.aggregator = aggregator;
+        this.viewer = viewer;
     }
 
     /**
@@ -53,18 +41,10 @@ public class EmailReporter {
                         metricsStorage.getRequestInfos(startTimeInMillis, endTimeInMillis);
 
                 //根据原始数据，计算得到统计数据
-                Map<String, RequestStat> requestStats = new HashMap<>();
-                for (Map.Entry<String, List<RequestInfo>> entry: requestInfos.entrySet()) {
-                    String apiName = entry.getKey();
-                    List<RequestInfo> requestInfosPerApi = entry.getValue();
-                    RequestStat requestStat = Aggregator.aggregate(requestInfosPerApi, durationInMillis);
-                    requestStats.put(apiName, requestStat);
-                }
+                Map<String, RequestStat> requestStats = aggregator.aggregate(requestInfos, durationInMillis);
 
                 //将统计数据推送到邮箱
-                for (String address: toAddresses) {
-                    emailSender.send(requestStats, address);
-                }
+                viewer.output(requestStats, startTimeInMillis, endTimeInMillis);
             }
         }, firstTime, DAY_HOURS_IN_SECONDS * 1000);
     }
