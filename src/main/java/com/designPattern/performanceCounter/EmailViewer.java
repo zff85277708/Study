@@ -12,11 +12,16 @@ public class EmailViewer implements StatViewer {
     private List<String> toAddresses = new ArrayList<>();
 
     public EmailViewer() {
-        emailSender = new EmailSender();
+        this(new EmailSender());
     }
 
     public EmailViewer(EmailSender emailSender) {
         this.emailSender = emailSender;
+    }
+
+    public EmailViewer(List<String> toAddresses) {
+        this(new EmailSender());
+        this.toAddresses = toAddresses;
     }
 
     /**

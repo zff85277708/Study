@@ -8,6 +8,10 @@ import org.apache.commons.lang.StringUtils;
 public class MetricsCollector {
     private MetricsStorage metricsStorage;
 
+    public MetricsCollector() {
+        this(new RedisMetricsStorage());
+    }
+
     public MetricsCollector(MetricsStorage metricsStorage) {
         this.metricsStorage = metricsStorage;
     }

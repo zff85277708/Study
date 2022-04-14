@@ -1,12 +1,12 @@
 package com.designPattern.performanceCounter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PerfCounterTest {
     public static void main(String[] args) {
-        MetricsStorage storage = new RedisMetricsStorage();
-        Aggregator aggregator = new Aggregator();
-
         //收集接口访问数据
-        MetricsCollector collector = new MetricsCollector(storage);
+        MetricsCollector collector = new MetricsCollector();
         collector.recordRequest(new RequestInfo("register", 123, 10234));
         collector.recordRequest(new RequestInfo("register", 223, 11234));
         collector.recordRequest(new RequestInfo("register", 323, 12334));
@@ -14,14 +14,14 @@ public class PerfCounterTest {
         collector.recordRequest(new RequestInfo("login", 1223, 14234));
 
         //定时触发统计并将结果显示到终端
-        ConsoleViewer consoleViewer = new ConsoleViewer();
-        ConsoleReporter consoleReporter = new ConsoleReporter(storage, aggregator, consoleViewer);
+        ConsoleReporter consoleReporter = new ConsoleReporter();
         consoleReporter.startRepeatedReport(10, 10);
+//        consoleReporter.startRepeatedReport(5, 5);
 
         //定时触发统计并将结果输出到邮件
-        EmailViewer emailViewer = new EmailViewer();
-        emailViewer.addToAddress("602192932@qq.com");
-        EmailReporter emailReporter = new EmailReporter(storage, aggregator, emailViewer);
+        List<String> emailToAddresses = new ArrayList<>();
+        emailToAddresses.add("602192932@qq.com");
+        EmailReporter emailReporter = new EmailReporter(emailToAddresses);
         emailReporter.startDailyReport();
 
         try {
