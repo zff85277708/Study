@@ -15,7 +15,7 @@ public class PerfCounterTest {
 
         //定时触发统计并将结果显示到终端
         ConsoleReporter consoleReporter = new ConsoleReporter();
-        consoleReporter.startRepeatedReport(10, 10);
+        consoleReporter.startRepeatedReport(5, 5);
 //        consoleReporter.startRepeatedReport(5, 5);
 
         //定时触发统计并将结果输出到邮件
