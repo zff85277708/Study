@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SubsetsWithDup {
     private List<List<Integer>> result = new ArrayList<>();
-    private List<Integer> list = new ArrayList<>();
+    private List<Integer> list = new ArrayList<>( );
     private boolean[] flags;
 
     public List<List<Integer>> subsetsWithDup(int[] nums) {
