@@ -20,8 +20,10 @@ public class ReverseBetween {
 
         Stack<ListNode> stack = new Stack<>();
         while (start <= right) {
-            stack.push(head);
+            ListNode tmp = head;
             head = head.next;
+            tmp.next = null;
+            stack.push(tmp);
             start++;
         }
 
