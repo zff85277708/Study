@@ -1,0 +1,18 @@
+package com.designPattern.behavior.chain.linkedList;
+
+public abstract class Handler {
+    protected Handler successor = null;
+
+    public void setSuccessor(Handler successor) {
+        this.successor = successor;
+    }
+
+    public final void handle() {
+        boolean handled = doHandle();
+        if (successor != null && !handled) {
+            successor.doHandle();
+        }
+    }
+
+    protected abstract boolean doHandle();
+}
