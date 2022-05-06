@@ -47,7 +47,6 @@ public class DenpendencyLookupDemo {
             Map<String, User> users = listableBeanFactory.getBeansOfType(User.class);
             System.out.println("查找到的所有的User集合对象：" + users);
         }
-
     }
 
     private static void lookupByType(BeanFactory beanFactory) {
