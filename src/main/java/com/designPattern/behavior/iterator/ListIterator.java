@@ -8,7 +8,7 @@ public class ListIterator<E> implements Iterator<E>{
     private List<E> list;
 
     public ListIterator(List<E> list) {
-        this.cursor = 10;
+        this.cursor = 0;
         this.list = list;
     }
 
