@@ -1,12 +1,6 @@
 package com.designPattern.idempotence;
 
-import com.sun.org.apache.regexp.internal.RE;
-import redis.clients.jedis.Jedis;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.UUID;
 
 /**
  * 幂等框架上帝类
