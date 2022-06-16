@@ -21,7 +21,6 @@ public class RateLimiter {
     private Map<String, RateLimitAlg> counters = new ConcurrentHashMap<>();
     private RateLimitRule rule;
 
-
     public RateLimiter() {
         RuleConfigSource configSource = new FileRuleConfigSource();
         RuleConfig ruleConfig = configSource.load();
