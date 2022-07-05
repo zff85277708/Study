@@ -1,0 +1,34 @@
+模块二：NIO 技术 - 构建高吞吐服务器的终极武器
+教学目标
+1. 理解 NIO 的相关概念和原理，了解核心知识；
+
+2. 全面掌握 Netty 相关的功能特性，掌握 Netty 的技术原理；
+
+3. 全面学会使用 Netty 技术编程，能够写出高效服务器端代码；
+
+4. 掌握常用的性能压测技术和相关工具，能够压测 HTTP 接口性能。
+
+学习和工作中的痛点
+1. 不理解 NIO 相关概念和技术点，搞不清原理，沟通和面试时无法准确表达；
+
+2. 缺乏实际场景的练习，对 Netty 的使用和原理不熟悉，难以应用到工作中；
+
+3. 不会使用 Netty 做高性能服务端编程，对性能相关指标和数据没有概念。
+
+通过学习掌握的核心能力
+1. 夯实基础：掌握 NIO 相关的知识和技术，能知道各种技术有什么优缺点，适用于什么场景；
+
+2. 深入学习：熟练掌握 Netty/NIO 编程，能够设计实现一个高性能 HTTP 服务器/ API 网关；
+
+3. 积累经验：了解常见的性能相关概念和压测入门，对性能指标有清晰概念，能够简单地量化分析。
+
+详细内容
+1. 同步/异步、阻塞/非阻塞、BIO、NIO、AIO、Reactor/Proactor；
+
+2. ByteBuff/Acceptor/Channel/Handler、NioEventLoopGroup/EventLoop、bossGroup/workerGroup；
+
+3. Netty 的启动和执行过程、线程模型、事件驱动、服务端和客户端的使用方式；
+
+4. 常见的 API Gateway/HTTP Server、SEDA 原理、业务 API 网关的功能和结构；
+
+5. Throughout/TPS/QPS、Latency/P99/P95/P90、ApacheBench/Wrk/JMeter/LoadRunner。
