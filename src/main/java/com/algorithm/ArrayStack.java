@@ -27,6 +27,7 @@ public class ArrayStack<T> {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     public T pop() {
         if (count == 0) return null;
         return (T) items[--count];
