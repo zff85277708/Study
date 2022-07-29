@@ -1,5 +1,8 @@
 package com.algorithm;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 链表实现LRU缓存
  * @param <E>
@@ -8,16 +11,19 @@ public class LinkedLRU<E> {
     private Node<E> first;
     private Node<E> last;
     private int size;
-    private final int limit;
+    private final int capacity;
+    //基于散列表实现缓存元素O(1)复杂度查找
+    private final Map<String, Node<E>> hashMap;
     private static final int DEFAULT_LIMIT = 5;
 
     public LinkedLRU() {
         this(DEFAULT_LIMIT);
     }
 
-    public LinkedLRU(int limit) {
-        if (limit < 5) limit = DEFAULT_LIMIT;
-        this.limit = limit;
+    public LinkedLRU(int capacity) {
+        if (capacity < 5) capacity = DEFAULT_LIMIT;
+        this.capacity = capacity;
+        hashMap = new HashMap<>(capacity);
     }
 
     public synchronized E search(String id) {
@@ -45,7 +51,7 @@ public class LinkedLRU<E> {
             first = new Node<>(item, null, id);
             last = first;
             size++;
-        } else if (size >= limit) {
+        } else if (size >= capacity) {
             Node<E> next = first;
             while (next.next != null) {
                 if (last == next.next)
@@ -75,11 +81,13 @@ public class LinkedLRU<E> {
 
     private static class Node<E> {
         E item;
+        Node<E> pre;
         Node<E> next;
         String id;
 
-        Node(E item, Node<E> next, String id) {
+        Node(E item, Node<E> pre, Node<E> next, String id) {
             this.item = item;
+            this.pre = pre;
             this.next = next;
             this.id = id;
         }
