@@ -1,7 +1,6 @@
 package com.algorithm;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 链表实现LRU缓存
@@ -15,7 +14,7 @@ public class LinkedLRU<E> {
     private final int capacity;
     //基于散列表实现缓存元素O(1)复杂度查找
     private final HashMap<String, Node<E>> hashMap;
-    private static final int DEFAULT_LIMIT = 5;
+    private static final int DEFAULT_LIMIT = 10;
 
     public LinkedLRU() {
         this(DEFAULT_LIMIT);
@@ -101,7 +100,7 @@ public class LinkedLRU<E> {
     }
 
     public static void main(String[] args) {
-        LinkedLRU<String> linkedLRU = new LinkedLRU<>(10);
+        LinkedLRU<String> linkedLRU = new LinkedLRU<>();
         for (int i = 0; i < 10; i++) {
             linkedLRU.add(String.valueOf(i), String.valueOf(i));
 //            System.out.println(linkedLRU);
