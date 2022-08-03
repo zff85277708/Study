@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * 链表实现LRU缓存
+ * 最近最少使用的节点放在链表尾
  * @param <E>
  */
 public class LinkedLRU<E> {
@@ -13,7 +14,7 @@ public class LinkedLRU<E> {
     private int size;
     private final int capacity;
     //基于散列表实现缓存元素O(1)复杂度查找
-    private final Map<String, Node<E>> hashMap;
+    private final HashMap<String, Node<E>> hashMap;
     private static final int DEFAULT_LIMIT = 5;
 
     public LinkedLRU() {
@@ -27,45 +28,50 @@ public class LinkedLRU<E> {
     }
 
     public synchronized E search(String id) {
-        if (0 == size) return null;
-        if(id.equals(first.id)) return first.item;
+        if(!hashMap.containsKey(id)) return null;
 
-        Node<E> next = first;
-        while (next.next != null) {
-            if (id.equals(next.next.id)) {
-                Node<E> tmp = next.next;
-                next.next = next.next.next;
-                //尾节点命中，重新更新尾节点
-                if (next.next == null) last = next;
-                tmp.next = first;
-                first = tmp;
-                return tmp.item;
-            }
-            next = next.next;
-        }
-        return null;
+        Node<E> currentNode = hashMap.get(id);
+        if (null == currentNode.pre) return currentNode.item;
+
+        currentNode.pre.next = currentNode.next;
+        //尾节点命中，重新更新尾节点
+        if (null == currentNode.next)
+            last = currentNode.pre;
+        else
+            currentNode.next.pre = currentNode.pre;
+
+        currentNode.pre = null;
+        currentNode.next = first;
+        first.pre = currentNode;
+        first = first.pre;
+        return first.item;
     }
 
     public synchronized void add(String id, E item) {
+        //数据是否已经在缓存中
+        if (search(id) != null) return;
+
         if (0 == size) {
-            first = new Node<>(item, null, id);
+            first = new Node<>(item, null, null, id);
+            hashMap.put(id, first);
             last = first;
             size++;
-        } else if (size >= capacity) {
-            Node<E> next = first;
-            while (next.next != null) {
-                if (last == next.next)
-                    break;
-                else
-                    next = next.next;
-            }
-            next.next = new Node<>(item, null, id);
-            last = next.next;
-        } else {
-            last.next = new Node<>(item, null, id);
-            last = last.next;
-            size++;
+            return;
         }
+
+        if (size >= capacity) {
+            hashMap.remove(last.id);
+            Node<E> delNode = last;
+            last.pre.next = null;
+            last = last.pre;
+            delNode.pre = null;
+            size--;
+        }
+
+        first.pre = new Node<>(item, null, first, id);
+        hashMap.put(id, first.pre);
+        first = first.pre;
+        size++;
     }
 
     @Override
@@ -73,7 +79,8 @@ public class LinkedLRU<E> {
         Node<E> next = first;
         StringBuilder builder = new StringBuilder();
         while (next != null) {
-            builder.append(next.id).append(": ").append(next.item.toString()).append("\n");
+            builder.append("id: ").append(next.id).append("--")
+                    .append("value: ").append(next.item.toString()).append("\n");
             next = next.next;
         }
         return builder.toString();
@@ -94,7 +101,7 @@ public class LinkedLRU<E> {
     }
 
     public static void main(String[] args) {
-        LinkedLRU<String> linkedLRU = new LinkedLRU<>();
+        LinkedLRU<String> linkedLRU = new LinkedLRU<>(10);
         for (int i = 0; i < 10; i++) {
             linkedLRU.add(String.valueOf(i), String.valueOf(i));
 //            System.out.println(linkedLRU);
@@ -118,6 +125,12 @@ public class LinkedLRU<E> {
 
         res = linkedLRU.search("6");
         System.out.println(res);
+        System.out.println(linkedLRU);
+
+        linkedLRU.add("10", "10");
+        System.out.println(linkedLRU);
+
+        linkedLRU.add("10", "10");
         System.out.println(linkedLRU);
     }
 }
