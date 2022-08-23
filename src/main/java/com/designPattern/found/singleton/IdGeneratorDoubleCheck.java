@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class IdGeneratorDoubleCheck {
     private AtomicLong id = new AtomicLong(0);
-    private static IdGeneratorDoubleCheck idGenerator;
+    private static volatile IdGeneratorDoubleCheck idGenerator;
 
     private IdGeneratorDoubleCheck() {}
 
